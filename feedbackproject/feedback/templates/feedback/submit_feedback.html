@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submit Feedback for {{ item.name }}</title>
+</head>
+<body>
+    <h1>Submit Feedback for {{ item.name }}</h1>
+
+    <form method="post" action="{% url 'submit_feedback' item.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+    <br>
+    <!-- Return Home link -->
+    <a href="{% url 'home' %}">Return Home</a>
+</body>
+</html>

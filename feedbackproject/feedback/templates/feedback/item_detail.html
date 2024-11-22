@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load custom_filters %}
+
+<html>
+<head>
+    <title>{{ item.name }}</title>
+</head>
+<body>
+    <h1>{{ item.name }}</h1>
+    
+    <h2>Average Rating: 
+        {% if feedback_list %}
+            {{ item|average }}
+        {% else %}
+            No ratings yet
+        {% endif %}
+    </h2>
+    
+    <h3>Feedback:</h3>
+    <ul>
+        {% for feedback in feedback_list %}
+            <li>
+                <strong>{{ feedback.comment }}</strong> - Rating: {{ feedback.rating }} - {{ feedback.created_at }}
+            </li>
+        {% empty %}
+            <li>No feedback available.</li>
+        {% endfor %}
+    </ul>
+    
+    <h3>Submit Feedback:</h3>
+    <form method="post" action="{% url 'submit_feedback' item.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+    <br>
+    <!-- Return Home link -->
+    <a href="{% url 'home' %}">Return Home</a>
+</body>
+</html>

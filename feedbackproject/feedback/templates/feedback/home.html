@@ -1,0 +1,24 @@
+<!-- feedback/templates/feedback/home.html -->
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome to the Feedback App</h1>
+    <ul>
+        {% for item in items %}
+            <li>
+                <a href="{% url 'item_detail' item.id %}">{{ item.name }}</a>
+                <!-- Link to the item detail page -->
+                <a href="{% url 'submit_feedback' item.id %}">Leave Feedback</a> <!-- Link to feedback page -->
+            </li>
+        {% empty %}
+            <li>No items available.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
