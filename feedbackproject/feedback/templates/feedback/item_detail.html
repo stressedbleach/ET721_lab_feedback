@@ -1,41 +1,140 @@
 <!DOCTYPE html>
 {% load custom_filters %}
+{% load static %}
 
 <html>
+
 <head>
     <title>{{ item.name }}</title>
-</head>
-<body>
-    <h1>{{ item.name }}</h1>
     
-    <h2>Average Rating: 
-        {% if feedback_list %}
-            {{ item|average }}
-        {% else %}
-            No ratings yet
-        {% endif %}
-    </h2>
-    
-    <h3>Feedback:</h3>
-    <ul>
-        {% for feedback in feedback_list %}
-            <li>
-                <strong>{{ feedback.comment }}</strong> - Rating: {{ feedback.rating }} - {{ feedback.created_at }}
-            </li>
-        {% empty %}
-            <li>No feedback available.</li>
-        {% endfor %}
-    </ul>
-    
-    <h3>Submit Feedback:</h3>
-    <form method="post" action="{% url 'submit_feedback' item.id %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
+    <style>
+        body {
+            background-image: url("{% static 'feedback/images/img1.jpg' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+        }
 
-    <br>
-    <!-- Return Home link -->
-    <a href="{% url 'home' %}">Return Home</a>
+        header {
+            background-color: rgba(255, 255, 255, 0.8); /* Opaque white background */
+            color: #fff; /* White text */
+            padding: 1rem;
+            text-align: center;
+            border-radius: 5px;
+            margin-bottom: 0.5rem; /* Smaller margin for header */
+            font-family: 'Courier New', monospace;
+        }
+
+        main {
+            padding: 2rem;
+            background-color: rgba(255, 255, 255, 0.8); /* Opaque white background */
+            border-radius: 8px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            color: #000000; /* White text */
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+
+        h1 {
+            color: #000000;
+            font-size: 2rem;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 1.5rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+        }
+
+        li {
+            margin: 1rem 0;
+        }
+
+        a {
+            font-family: 'Courier New', monospace;
+            color: #00008B; /* Dark blue color for links */
+            text-decoration: none;
+            font-weight: 500;
+            margin-right: 15px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        a.button-link {
+            background-color: #0066cc;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 4px;
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none; /* Remove underline from link */
+            margin: 0 auto; /* Center the button horizontally */
+            width: fit-content; /* Makes the width adjust to content */
+        }
+
+        a.button-link:hover {
+            background-color: #004d99;
+        }
+
+        .center-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>{{ item.name }}</h1>
+    </header>
+    
+    <main>
+        <h2>Average Rating: 
+            {% if feedback_list %}
+                {{ item|average|floatformat:2 }}
+            {% else %}
+                No ratings yet
+            {% endif %}
+        </h2>
+        
+        <h3>Feedback:</h3>
+        <ul>
+            {% for feedback in feedback_list %}
+                <li>
+                    <strong>{{ feedback.comment }}</strong> - Rating: {{ feedback.rating }} - {{ feedback.created_at }}
+                </li>
+            {% empty %}
+                <li>No feedback available.</li>
+            {% endfor %}
+        </ul>
+        
+        <h3>Submit Feedback:</h3>
+        <form method="post" action="{% url 'submit_feedback' item.id %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+            <div class="center-button">
+                <a href="{% url 'home' %}" class="button-link">Return Home</a>
+            </div>
+        </form>
+    </main>
+
+
 </body>
+
 </html>
